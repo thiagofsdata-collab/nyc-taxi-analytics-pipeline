@@ -1,20 +1,30 @@
-# Key Findings (2023-01 sample)
+# Key Findings (Full Year 2023)
+
+## Scale
+- Total trips ingested (Bronze): 38,310,226
+- Clean trips (Silver): 37,192,018 (2.92% removed by quality rules)
+- Total revenue 2023: ~$1.08 billion
 
 ## Airports dominate revenue
-- JFK Airport alone generates 14.5% of total revenue
-- JFK + LaGuardia together: ~21% of total revenue
-- Airport trips have high average ticket (~$70-84) due to long distances
+- JFK Airport is the single highest-earning pickup zone
+- JFK + LaGuardia together drive a large share of total revenue
+- Airport trips have high average ticket due to long distances
 
 ## Manhattan drives volume
-- Manhattan accounts for ~75% of total revenue, mostly by trip volume
-- Average ticket in Manhattan is low (~$22) compared to airports
-- Top Manhattan zones: Midtown, Upper East Side, Times Square, Penn Station
+- Manhattan accounts for the largest share of revenue, mostly by trip volume
+- Average ticket in Manhattan is lower than airports
+
+## Seasonality (month-over-month)
+- Strongest growth: March (+20.76%) and October (+21.33%)
+- Sharpest drop: July (-13.70%), summer vacation period
+- August is the yearly low point for demand
+- Average ticket stays stable (~$27-30) all year: variation is driven by volume, not price
 
 ## Best shift to operate
-- Afternoon (12-18h) is the highest-revenue shift overall
-- Overnight (0-6h) has the highest average ticket ($28.13) and longest trips (4.71 mi)
-- Insight: fewer trips at night, but more profitable per trip
+- Afternoon (12-18h) is the highest-revenue shift
+- Overnight (0-6h) has the highest average ticket and longest trips
 
-## Revenue concentration
-- Top 10 zones (out of 265) concentrate a large share of total revenue
-- Revenue is driven by airports (high value) + Manhattan commercial corridor (high volume)
+## Performance engineering
+- Applied OPTIMIZE (file compaction) and ZORDER on Silver
+- ZORDER on pickup_borough and hour_of_day enables data skipping
+- Computed table statistics with ANALYZE for better query plans
