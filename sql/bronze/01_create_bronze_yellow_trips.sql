@@ -20,10 +20,10 @@ USING DELTA
 AS
 SELECT
     *,
-    current_timestamp() AS ingestion_timestamp,  -- when the row entered the pipeline
-    2023 AS source_file_year                       -- reference year for filtering
+    current_timestamp() AS ingestion_timestamp,  
+    2023 AS source_file_year                     
 FROM read_files(
-    '/Volumes/nyc_taxi/bronze/raw_files/yellow_tripdata_2023-01.parquet',
+    '/Volumes/nyc_taxi/bronze/raw_files/yellow_tripdata_2023-*.parquet',
     format => 'parquet'
 );
 
