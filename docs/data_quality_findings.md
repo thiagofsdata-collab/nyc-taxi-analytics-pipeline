@@ -35,3 +35,16 @@ Note: categories overlap, so the sum is not exact.
 
 LEFT JOIN with taxi_zones covered 100% of trips.
 Null boroughs after join: 0 (pickup and dropoff).
+
+
+## Schema evolution issue (full-year ingestion)
+
+When ingesting all 12 monthly files, the TLC dataset uses
+inconsistent column casing across months: `airport_fee` in some
+files vs `Airport_fee` in others. Reading them together with a
+wildcard caused column misalignment, leaving ~35M rows with null
+PULocationID and broken zone joins.
+
+Fix: read each file individually with explicit column names and
+combine with UNION ALL, so each file is parsed with its own schema.
+Validation after fix: 0 null PULocationID, 0 null pickup_zone.

@@ -20,3 +20,4 @@ GROUP BY
     pickup_borough,
     pickup_zone,
     hour_of_day;
+
