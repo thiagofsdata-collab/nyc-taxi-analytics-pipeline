@@ -95,6 +95,13 @@ if st.button("Ask") and question:
     with st.spinner("Generating SQL..."):
         generated_sql = generate_sql(question)
 
+    if not generated_sql.strip().upper().startswith("SELECT"):
+        st.error("⚠️ The model did not return a valid SELECT statement. Please rephrase your question.")
+        st.stop()
+
+    if "LIMIT" not in generated_sql.upper():
+        generated_sql = generated_sql.rstrip().rstrip(";") + "\nLIMIT 500"
+
     st.subheader("Generated SQL")
     st.code(generated_sql, language="sql")
 
@@ -103,5 +110,11 @@ if st.button("Ask") and question:
             df = run_query(generated_sql)
             st.subheader("Result")
             st.dataframe(df)
+
+            cat_cols = [c for c in df.columns if df[c].dtype == object]
+            num_cols = [c for c in df.columns if pd.api.types.is_numeric_dtype(df[c])]
+            if len(cat_cols) == 1 and len(num_cols) >= 1:
+                st.subheader("Chart")
+                st.bar_chart(df.set_index(cat_cols[0])[num_cols])
         except Exception as e:
             st.error(f"Error running query: {e}")
